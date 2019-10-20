@@ -22,13 +22,15 @@ class Solution:
 #【非内置函数】
 class Solution:
     def addBinary(self, a: str, b: str) -> str:
-        r, p = '', 0
-        d = len(b) - len(a)
-        a = '0' * d + a
-        b = '0' * -d + b
-        for i, j in zip(a[::-1], b[::-1]):
-            s = int(i) + int(j) + p
-            r = str(s % 2) + r
-            p = s // 2
-        return '1' + r if p else r
-
+        result, carry, val = '', 0, 0
+        for i in range(max(len(a), len(b))):
+            val = carry
+            if i < len(a):
+                val += int(a[-(i+1)])
+            if i < len(b):
+                val += int(b[-(i+1)])
+            carry, val = val // 2, val % 2
+            result += str(val)
+        if carry:
+            result += str(1)
+        return result[::-1]
